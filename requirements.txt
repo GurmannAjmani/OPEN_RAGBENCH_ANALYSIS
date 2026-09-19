@@ -1,0 +1,5 @@
+tiktoken
+pandas
+matplotlib
+seaborn
+tqdm
