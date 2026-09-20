@@ -8,4 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.env
 open_ragbench/
+chunks/*.jsonl
+chroma_db/

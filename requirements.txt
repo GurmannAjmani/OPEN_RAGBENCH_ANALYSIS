@@ -3,3 +3,8 @@ pandas
 matplotlib
 seaborn
 tqdm
+langchain-text-splitters
+sentence-transformers
+psutil
+python-dotenv
+chromadb
