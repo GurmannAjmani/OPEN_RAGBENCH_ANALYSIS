@@ -12,3 +12,5 @@ wheels/
 open_ragbench/
 chunks/*.jsonl
 chroma_db/
+assets/images/*
+!assets/images/.gitkeep
