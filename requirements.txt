@@ -9,3 +9,4 @@ psutil
 python-dotenv
 chromadb
 requests
+rank-bm25
