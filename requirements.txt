@@ -10,3 +10,6 @@ python-dotenv
 chromadb
 requests
 rank-bm25
+groq
+ragas
+openai

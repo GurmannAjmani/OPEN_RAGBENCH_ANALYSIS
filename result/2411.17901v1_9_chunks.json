@@ -1,0 +1,43 @@
+[
+  {
+    "chunk_id": "2411.17901v1:9:text:0",
+    "paper_id": "2411.17901v1",
+    "section_id": 9,
+    "parent_id": "2411.17901v1:9",
+    "chunk_type": "text",
+    "chunk_index": 0,
+    "title": "Assessing microbiome engraftment extent following fecal microbiota\n  transplant with q2-fmt",
+    "categories": [
+      "q-bio.OT"
+    ],
+    "content": "## Availability and Future Directions\n## Testing and Maintenance\n\nq2-fmt has a wide breadth of unit tests that cover all the actions found in the plugin. These unit tests are run on every commit to the dev branch and on every pull request.\nq2-fmt can be installed in both the QIIME 2 amplicon and metagenome distributions as a community plugin using instructions in the project's documentation. Unit tests are run weekly against the newest build of the QIIME 2 amplicon distribution and the developers are alerted to test failures. This will ensure that q2-fmt remains current with the QIIME 2 framework.\nq2-fmt was developed as a part of an informatics Ph.D project at Northern Arizona University. Maintenance of this software will be performed by the Caporaso Lab at Northern Arizona University. User support for q2-fmt is provided on the QIIME 2 Forum. Worked examples of applying q2-FMT to a real-world Autologous FMT (auto-FMT) cancer microbiome study are available in the project's documentation ${ }^{2}$.\n\nBy nature of being implemented as a QIIME 2 plugin, q2-fmt is available through a Python 3 API, a command line interface, and through Galaxy's graphical user interface. Analyses are fully reproducible, as a result of the QIIME 2 framework's integrated provenance tracking and provenance replay functionality ${ }^{5}$.\n\nProject home page: https://q2-fmt.readthedocs.io\nOperating systems: Linux, macOS, Windows via Windows Subsystem for Linux\nProgramming language: Python 3\nOther requirements: QIIME 22024.10 or later\nLicense: BSD 3-Clause\nAny restrictions to use by non-academics: None; q2-fmt is open source and free for all use.\n\nList of works cited\n\n1. Herman, C. et al. Assessing Engraftment Following Fecal Microbiota Transplant. arXiv [q-bio.QM] (2024).\n2. Taur, Y. et al. Reconstitution of the gut microbiota of antibiotic-treated patients by autologous fecal microbiota transplant. Sci. Transl. Med. 10, eaap9489 (2018).\n3. Aggarwala, V. et al. Precise quantification of bacterial strains after fecal microbiota transplantation delineates long-term engraftment and explains outcomes. Nature Microbiology 6, 1309-1318 (2021).\n4. Kang, D.-W. et al. Long-term benefit of Microbiota Transfer Therapy on autism symptoms and gut microbiota. Sci. Rep. 9, 5821 (2019).\n5. Keefe, C. R. et al. Facilitating bioinformatics reproducibility with QIIME 2 Provenance Replay. PLoS Comput. Biol. 19, e1011676 (2023).\n\n![img-0.jpeg](img-0.jpeg)\n\nFigure 1. Raincloud plots showing the distribution of subjects' measure of Distance to DonorSampleID across timepoints. Kernel density estimation performed using a bandwidth calculated by Scott's method. Boxplots show the min and max of the data (whiskers) as well as the first, second (median), and third quartiles (box). Points and connecting lines represent individual subjects with a consistent jitter added across groups such that slopes across adjacent groups are visually comparable between subjects.\n\n![table_0](table_0)\n\nFigure 1. Jaccard Distance to Donor following FMT intervention, as assessed using qiime fmt cc. This Visualization allows for users to interactively investigate whether recipient microbiomes become more similar to donor microbiomes with treatment. In this figure, FMT intervention was at time point 3 . Since this is an autoFMT study, the 'donor' is the recipient before cancer treatment. This figure shows that spontaneous recovery from cancer treatment leads to some individuals recovering quickly while others do not. The FMT intervention decreases the variability in distance to donor of all recipients. We see that their distance to donor increases at the last time point, but this is up to 2 years after the initial FMT and may indicate the development of an \"individualized microbiome\". Presented data is from Taur et al. (2018) ${ }^{2}$. An interactive version of this figure is available in the project documentation at https://q2-fmt.readthedocs.io."
+  },
+  {
+    "chunk_id": "2411.17901v1:9:img-0.jpeg:context",
+    "paper_id": "2411.17901v1",
+    "section_id": 9,
+    "parent_id": "2411.17901v1:9",
+    "chunk_type": "image_context",
+    "image_id": "2411.17901v1:9:img-0.jpeg",
+    "image_path": "assets\\images\\2411.17901v1\\9\\img-0.jpg",
+    "title": "Assessing microbiome engraftment extent following fecal microbiota\n  transplant with q2-fmt",
+    "categories": [
+      "q-bio.OT"
+    ],
+    "content": "9489 (2018).\n3. Aggarwala, V. et al. Precise quantification of bacterial strains after fecal microbiota transplantation delineates long-term engraftment and explains outcomes. Nature Microbiology 6, 1309-1318 (2021).\n4. Kang, D.-W. et al. Long-term benefit of Microbiota Transfer Therapy on autism symptoms and gut microbiota. Sci. Rep. 9, 5821 (2019).\n5. Keefe, C. R. et al. Facilitating bioinformatics reproducibility with QIIME 2 Provenance Replay. PLoS Comput. Biol. 19, e1011676 (2023).\n\n![img-0.jpeg](img-0.jpeg)\n\nFigure 1. Raincloud plots showing the distribution of subjects' measure of Distance to DonorSampleID across timepoints. Kernel density estimation performed using a bandwidth calculated by Scott's method. Boxplots show the min and max of the data (whiskers) as well as the first, second (median), and third quartiles (box). Points and connecting lines represent individual subjects with a consistent jitter added across groups such that slopes across adjacent groups are visually comparable between subjects.\n\n![table_0](table_0)\n\nFigure 1. Jaccard Distance to Donor following FMT intervention, as assessed using qiime fmt cc. This Visualization allows for users to interactively investigate whether recipient microbiomes become more"
+  },
+  {
+    "chunk_id": "2411.17901v1:9:table_0:context",
+    "paper_id": "2411.17901v1",
+    "section_id": 9,
+    "parent_id": "2411.17901v1:9",
+    "chunk_type": "table_context",
+    "table_id": "2411.17901v1:9:table_0",
+    "table_path": "assets\\tables\\2411.17901v1\\9\\table_0.md",
+    "title": "Assessing microbiome engraftment extent following fecal microbiota\n  transplant with q2-fmt",
+    "categories": [
+      "q-bio.OT"
+    ],
+    "content": "the data (whiskers) as well as the first, second (median), and third quartiles (box). Points and connecting lines represent individual subjects with a consistent jitter added across groups such that slopes across adjacent groups are visually comparable between subjects.\n\n\n| Group A | Group B | A | B |  |  |  |  |\n\n\nFigure 1. Jaccard Distance to Donor following FMT intervention, as assessed using qiime fmt cc. This Visualization allows for users to interactively investigate whether recipient microbiomes become more similar to donor microbiomes with treatment. In this"
+  }
+]
