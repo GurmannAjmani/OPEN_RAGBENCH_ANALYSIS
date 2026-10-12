@@ -13,3 +13,6 @@ rank-bm25
 groq
 ragas
 openai
+django
+fastapi
+uvicorn

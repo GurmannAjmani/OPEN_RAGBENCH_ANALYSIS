@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenRAG</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f8fafc; color: #1e293b; font: 16px/1.55 Inter, ui-sans-serif, system-ui, sans-serif; }
+    .app { max-width: 900px; min-height: 100vh; margin: auto; padding: 28px 20px 110px; }
+    header { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .logo { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #2563eb; color: white; font-weight: 800; }
+    h1 { margin: 0; font-size: 22px; } header p { margin: 0; color: #64748b; font-size: 14px; }
+    #chat { display: flex; flex-direction: column; gap: 18px; }
+    .message { max-width: 82%; padding: 13px 16px; border-radius: 18px; box-shadow: 0 1px 2px #0f172a0d; }
+    .user { align-self: flex-end; background: #2563eb; color: white; border-bottom-right-radius: 4px; }
+    .assistant { align-self: flex-start; background: white; border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; }
+    .assistant > :first-child, .user > :first-child { margin-top: 0; } .assistant > :last-child, .user > :last-child { margin-bottom: 0; }
+    .thinking { color: #64748b; font-size: 14px; } .thinking::after { content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 7px; border-radius: 50%; background: #64748b; animation: pulse 1s infinite; }
+    .figures { display: grid; gap: 10px; margin-top: 14px; } .figures img { max-width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; }
+    .sources { margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px; } .sources summary { cursor: pointer; color: #475569; font-size: 14px; }
+    .chunk { margin-top: 10px; padding: 10px; border-radius: 10px; background: #f8fafc; } .chunk code { color: #2563eb; font-size: 12px; } .chunk pre { max-height: 180px; margin: 8px 0 0; overflow: auto; white-space: pre-wrap; font: 12px/1.45 ui-monospace, monospace; }
+    #chat-form { position: fixed; right: 0; bottom: 0; left: 0; padding: 16px; background: linear-gradient(transparent, #f8fafc 30%); }
+    .composer { display: flex; gap: 8px; max-width: 860px; margin: auto; padding: 7px; background: white; border: 1px solid #cbd5e1; border-radius: 16px; box-shadow: 0 8px 30px #0f172a12; }
+    input { flex: 1; min-width: 0; padding: 9px 10px; border: 0; outline: 0; font: inherit; } button { padding: 9px 16px; border: 0; border-radius: 10px; background: #2563eb; color: white; font: inherit; cursor: pointer; } button:disabled { opacity: .5; cursor: wait; }
+    @keyframes pulse { 50% { opacity: .2; transform: scale(.7); } }
+    @media (max-width: 600px) { .app { padding: 20px 14px 100px; } .message { max-width: 92%; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header><div class="logo">R</div><div><h1>OpenRAG</h1><p>Ask questions across the research corpus</p></div></header>
+    <main id="chat"></main>
+  </div>
+  <form id="chat-form"><div class="composer"><input id="question" placeholder="Ask about the papers" required autofocus><button>Send</button></div></form>
+  <script>
+    const chat = document.querySelector('#chat');
+    const form = document.querySelector('#chat-form');
+    const input = document.querySelector('#question');
+    const button = form.querySelector('button');
+
+    function message(kind, text = '') {
+      const node = document.createElement('article');
+      node.className = `message ${kind}`;
+      chat.append(node);
+      render(node, text);
+      return node;
+    }
+
+    function render(node, text) {
+      node.innerHTML = DOMPurify.sanitize(marked.parse(text));
+      node.querySelectorAll('img').forEach((image) => image.remove());
+      renderMathInElement(node, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true},
+        ],
+        throwOnError: false,
+      });
+    }
+
+    function showImages(node, images) {
+      if (!images.length) return;
+      const figures = document.createElement('div');
+      figures.className = 'figures';
+      for (const image of images) {
+        const figure = document.createElement('img');
+        figure.src = image.path.startsWith('http')
+          ? image.path
+          : `http://127.0.0.1:8001/assets/${image.path.replace(/^\/?assets\/(assets\/)?/, '')}`;
+        figure.alt = 'Retrieved paper figure';
+        figures.append(figure);
+      }
+      node.append(figures);
+    }
+
+    function showChunks(node, chunks) {
+      const sources = document.createElement('details');
+      sources.className = 'sources';
+      sources.open = true;
+      sources.innerHTML = `<summary>Retrieved chunks (${chunks.length})</summary>`;
+      for (const chunk of chunks) {
+        const card = document.createElement('div');
+        card.className = 'chunk';
+        const id = document.createElement('code');
+        id.textContent = chunk.chunk_id;
+        const content = document.createElement('pre');
+        content.textContent = chunk.content;
+        card.append(id, content);
+        sources.append(card);
+      }
+      node.append(sources);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const question = input.value.trim();
+      if (!question) return;
+      message('user', question);
+      const answer = message('assistant thinking', 'Thinking...');
+      input.value = '';
+      input.disabled = true;
+      button.disabled = true;
+      let markdown = '';
+      let images = [];
+      let chunks = [];
+      try {
+        const response = await fetch(`http://127.0.0.1:8001/chat?question=${encodeURIComponent(question)}`);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const events = buffer.split('\n\n');
+          buffer = events.pop();
+          for (const item of events) {
+            const type = item.match(/^event: (.+)$/m)?.[1];
+            const data = JSON.parse(item.match(/^data: (.+)$/m)?.[1] || 'null');
+            if (type === 'context') { images = data.images; chunks = data.chunks; }
+            if (type === 'token') { answer.classList.remove('thinking'); markdown += data; render(answer, markdown); }
+            if (type === 'done') { showChunks(answer, chunks); showImages(answer, images); }
+            if (type === 'error') render(answer, `**Error:** ${data}`);
+          }
+        }
+      } catch (error) {
+        render(answer, `**Error:** ${error.message}`);
+      } finally {
+        input.disabled = false;
+        button.disabled = false;
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>
