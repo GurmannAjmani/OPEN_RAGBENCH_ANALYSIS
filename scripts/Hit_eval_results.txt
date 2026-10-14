@@ -1,0 +1,5 @@
+all: 3,045 queries | Hit@1 0.671 | Hit@3 0.828 | Hit@5 0.875 | Hit@8 0.907 | MRR@8 0.757
+text: 1,914 queries | Hit@1 0.727 | Hit@3 0.868 | Hit@5 0.905 | Hit@8 0.928 | MRR@8 0.802
+text-image: 763 queries | Hit@1 0.566 | Hit@3 0.751 | Hit@5 0.813 | Hit@8 0.862 | MRR@8 0.671
+text-table: 148 queries | Hit@1 0.581 | Hit@3 0.743 | Hit@5 0.824 | Hit@8 0.872 | MRR@8 0.678
+text-table-image: 220 queries | Hit@1 0.605 | Hit@3 0.805 | Hit@5 0.859 | Hit@8 0.900 | MRR@8 0.711

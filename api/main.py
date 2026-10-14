@@ -130,14 +130,13 @@ def chat(question: str = Query(min_length=1)):
                 context_chunks.append(chunk)
                 context_size += chunk_size
 
-            parent_ids = {chunk["parent_id"] for chunk in context_chunks}
             images = [
                 {
                     "chunk_id": chunk["chunk_id"],
                     "path": "http://127.0.0.1:8001/assets/" + chunk["image_path"].replace("\\", "/").removeprefix("assets/"),
                 }
-                for chunk in resources()["chunks"]
-                if chunk.get("image_path") and chunk["parent_id"] in parent_ids
+                for chunk in context_chunks
+                if chunk["chunk_type"] == "image_context" and chunk.get("image_path")
             ]
             yield event("context", {"chunks": context_chunks, "images": images})
 
